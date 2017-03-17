@@ -19,9 +19,21 @@ class Main extends luxe.Game {
     } //config
 
     var block : Sprite;
+    var paper : Sprite;
     var selected : Sprite;
 
+    var offscreen : Vector;
+
     override function ready() {
+
+      offscreen = Luxe.screen.mid.multiply_xyz(1,3,1).clone();
+
+      paper = new Sprite({
+        name: 'paper sprite',
+        pos: offscreen,
+        color: new Color().rgb(0xffffff),
+        size: new Vector(400, 600)
+      });
 
       block = new Sprite({
         name: 'block sprite',
@@ -29,6 +41,7 @@ class Main extends luxe.Game {
         color: new Color().rgb(0xf94b04),
         size: new Vector(128, 128)
       });
+
       selected = null;
 
     } //ready
@@ -62,11 +75,13 @@ class Main extends luxe.Game {
 
     override function onmouseup(event:MouseEvent) {
       selected = null;
+      paper.pos.copy_from(offscreen);
     } //onmouseup
 
     override function onmousemove(event:MouseEvent) {
         if (selected != null) {
           selected.pos.lerp(event.pos, 0.5);
+          paper.pos.copy_from(Luxe.screen.mid);
         }
     } //onmousemove
 
