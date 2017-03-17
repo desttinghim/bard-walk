@@ -53,6 +53,22 @@ class Main extends luxe.Game {
       return (p.x > a1.x && p.x < a2.x && p.y > a1.y && p.y < a2.y);
     }
 
+    override function onmousedown(event:MouseEvent) {
+      if (pointInBox(event.pos, topLeftCorner(block), botRightCorner(block))) {
+        selected = block;
+      }
+    } //onmousedown
+
+    override function onmouseup(event:MouseEvent) {
+      selected = null;
+    } //onmouseup
+
+    override function onmousemove(event:MouseEvent) {
+        if (selected != null) {
+          selected.pos = event.pos;
+        }
+    } //onmousemove
+
     override function update(delta:Float) {
 
     } //update
