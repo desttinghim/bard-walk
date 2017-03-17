@@ -54,6 +54,7 @@ class Main extends luxe.Game {
     }
 
     override function onmousedown(event:MouseEvent) {
+      if (selected != null) {selected = null;}
       if (pointInBox(event.pos, topLeftCorner(block), botRightCorner(block))) {
         selected = block;
       }
@@ -65,7 +66,7 @@ class Main extends luxe.Game {
 
     override function onmousemove(event:MouseEvent) {
         if (selected != null) {
-          selected.pos = event.pos;
+          selected.pos.lerp(event.pos, 0.5);
         }
     } //onmousemove
 
