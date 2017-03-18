@@ -54,22 +54,11 @@ class Main extends luxe.Game {
 
     } //onkeyup
 
-    function topLeftCorner(s:Sprite) {
-      return new Vector(s.pos.x - s.size.x / 2, s.pos.y - s.size.y / 2);
-    }
-
-    function botRightCorner(s:Sprite) {
-      return new Vector(s.pos.x + s.size.x / 2, s.pos.y + s.size.y / 2);
-    }
-
-    function pointInBox( p:Vector, a1:Vector, a2:Vector ) {
-      return (p.x > a1.x && p.x < a2.x && p.y > a1.y && p.y < a2.y);
-    }
-
     override function onmousedown(event:MouseEvent) {
-      if (selected != null) {selected = null;}
-      if (pointInBox(event.pos, topLeftCorner(block), botRightCorner(block))) {
+      if (selected != null) {selected.destroy(); selected = null;}
+      if (block.point_inside_AABB(event.pos)) {
         selected = block;
+        selected.size.copy_from(block.size.divideScalar(2));
       }
     } //onmousedown
 
