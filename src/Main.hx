@@ -32,7 +32,7 @@ class Main extends luxe.Game {
         name: 'paper sprite',
         pos: offscreen,
         color: new Color().rgb(0xffffff),
-        size: new Vector(400, 600)
+        size: new Vector(Luxe.screen.size.x - 20, Luxe.screen.size.y / 2 - 20)
       });
 
       block = new Sprite({
@@ -57,12 +57,16 @@ class Main extends luxe.Game {
     override function onmousedown(event:MouseEvent) {
       if (selected != null) {selected.destroy(); selected = null;}
       if (block.point_inside_AABB(event.pos)) {
-        selected = block;
+        selected = new Sprite({
+          color: block.color
+        });
         selected.size.copy_from(block.size.divideScalar(2));
       }
     } //onmousedown
 
     override function onmouseup(event:MouseEvent) {
+      if (paper.point_inside_AABB(selected.pos)) {selected.add(new Attach(paper));}
+      else {selected.destroy();}
       selected = null;
       paper.pos.copy_from(offscreen);
     } //onmouseup
