@@ -42,6 +42,8 @@ class Main extends luxe.Game {
         size: new Vector(128, 128)
       });
 
+      block.add(new SelectIcon(block.texture, {name: "icon"}));
+
       selected = null;
 
     } //ready
@@ -55,27 +57,34 @@ class Main extends luxe.Game {
     } //onkeyup
 
     override function onmousedown(event:MouseEvent) {
+
       if (selected != null) {selected.destroy(); selected = null;}
       if (block.point_inside_AABB(event.pos)) {
         selected = new Sprite({
-          color: block.color
+          texture: block.get("icon").texture,
+          color: block.color,
+          size: new Vector().copy_from(block.size).divideScalar(2)
         });
-        selected.size.copy_from(block.size.divideScalar(2));
       }
+
     } //onmousedown
 
     override function onmouseup(event:MouseEvent) {
+
       if (paper.point_inside_AABB(selected.pos)) {selected.add(new Attach(paper));}
       else {selected.destroy();}
       selected = null;
       paper.pos.copy_from(offscreen);
+
     } //onmouseup
 
     override function onmousemove(event:MouseEvent) {
+
         if (selected != null) {
           selected.pos.lerp(event.pos, 0.5);
           paper.pos.copy_from(Luxe.screen.mid);
         }
+
     } //onmousemove
 
     override function update(delta:Float) {
