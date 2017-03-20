@@ -4,6 +4,7 @@ import luxe.Input;
 import luxe.Sprite;
 import luxe.Color;
 import luxe.Vector;
+import luxe.tween.Actuate;
 
 class Main extends luxe.Game {
 
@@ -26,7 +27,7 @@ class Main extends luxe.Game {
 
     override function ready() {
 
-      offscreen = Luxe.screen.mid.multiply_xyz(1,3,1).clone();
+      offscreen = Luxe.screen.mid.clone().multiply_xyz(1,3,1);
 
       paper = new Sprite({
         name: 'paper sprite',
@@ -63,8 +64,10 @@ class Main extends luxe.Game {
         selected = new Sprite({
           texture: block.get("icon").texture,
           color: block.color,
-          size: new Vector().copy_from(block.size).divideScalar(2)
+          size: block.size.clone().divideScalar(2),
+          pos: event.pos
         });
+        Actuate.tween(paper.pos, 0.2, Luxe.screen.mid);
       }
 
     } //onmousedown
@@ -74,15 +77,14 @@ class Main extends luxe.Game {
       if (paper.point_inside_AABB(selected.pos)) {selected.add(new Attach(paper));}
       else {selected.destroy();}
       selected = null;
-      paper.pos.copy_from(offscreen);
+      Actuate.tween(paper.pos, 0.2, offscreen);
 
     } //onmouseup
 
     override function onmousemove(event:MouseEvent) {
 
         if (selected != null) {
-          selected.pos.lerp(event.pos, 0.5);
-          paper.pos.copy_from(Luxe.screen.mid);
+          selected.pos = event.pos.clone();
         }
 
     } //onmousemove
