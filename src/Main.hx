@@ -63,11 +63,10 @@ class Main extends luxe.Game {
       if (block.point_inside_AABB(event.pos)) {
         selected = new Sprite({
           texture: block.get("icon").texture,
-          color: block.color,
           size: block.size.clone().divideScalar(2),
           pos: event.pos
         });
-        Actuate.tween(paper.pos, 0.2, Luxe.screen.mid);
+        paper.pos.copy_from(Luxe.screen.mid);
       }
 
     } //onmousedown
@@ -77,8 +76,7 @@ class Main extends luxe.Game {
       if (paper.point_inside_AABB(selected.pos)) {selected.add(new Attach(paper));}
       else {selected.destroy();}
       selected = null;
-      Actuate.tween(paper.pos, 0.2, offscreen);
-
+      paper.pos.copy_from(offscreen);
     } //onmouseup
 
     override function onmousemove(event:MouseEvent) {
